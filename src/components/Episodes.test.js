@@ -3,7 +3,7 @@ import { render } from '@testing-library/react';
 import Episodes from './Episodes';
 
 
-const episodesFixture = [
+export const episodesFixture = [
   {
     id: 'id',
     image: 'imageSrc'
