@@ -2,40 +2,37 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Dropdown from "react-dropdown";
 import parse from "html-react-parser";
-import { fetchShow } from './api/fetchShow';
+import { fetchShow } from "./api/fetchShow";
 import { formatSeasons } from "./utils/formatSeasons";
 import Episodes from "./components/Episodes";
 import "./styles.css";
 
 export default function App() {
-
   const [isFetchingData, setIsFetchingData] = useState(false);
   const [show, setShow] = useState(null);
   const [seasons, setSeasons] = useState([]);
   const [selectedSeason, setSelectedSeason] = useState("");
   const episodes = seasons[selectedSeason] || [];
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
 
   const getData = () => {
     setIsFetchingData(true);
     fetchShow()
-      .then(res => {
+      .then((res) => {
         console.log(res);
         setIsFetchingData(false);
         setShow(res.data);
         setSeasons(formatSeasons(res.data._embedded.episodes));
       })
-      .catch(err => {
+      .catch((err) => {
         setIsFetchingData(false);
         setError(err.message);
       });
   };
 
-  useEffect(getData(), []);
-    
-     
+  useEffect(() => getData(), []);
 
-  const handleSelect = e => {
+  const handleSelect = (e) => {
     setSelectedSeason(e.value);
   };
 

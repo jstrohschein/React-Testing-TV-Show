@@ -1,36 +1,27 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import Episodes from './Episodes';
-
+import React from "react";
+import { render, waitFor } from "@testing-library/react";
+import Episodes from "./Episodes";
 
 export const episodesFixture = [
   {
-    id: 'id',
-    image: 'imageSrc'
-  }
-]
+    id: "id",
+    image: "imageSrc",
+  },
+];
 
+test("Episodes renders", () => {
+  render(<Episodes episodes={[]} />);
+});
 
-test('Episodes renders', () => {
-  render(<Episodes episodes={[]}/>);
-})
+test("Episodes shows data when rerendered with new episodes prop", async () => {
+  const { queryAllByTestId, rerender } = render(<Episodes episodes={[]} />);
 
-test('Episodes shows data when rerendered with new episodes prop', () => {
+  expect(queryAllByTestId("episode")).toStrictEqual([]);
+  expect(queryAllByTestId("episode")).toHaveLength(0);
 
-  const { queryAllByTestId, rerender } = render(<Episodes episodes={ [] } />);
+  await waitFor(() => {
+    rerender(<Episodes episodes={episodesFixture} />);
 
-  expect(queryAllByTestId('episode')).toStrictEqual([]);
-  expect(queryAllByTestId('episode')).toHaveLength(0);
-
-  rerender(<Episodes episodes={ episodesFixture } />);
-
-  expect(queryAllByTestId('episode')).toHaveLength(1);
-
-})
-
-
-
-
-
-
-
+    expect(queryAllByTestId("episode")).toHaveLength(1);
+  });
+});
